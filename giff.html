@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+body {
+    background: #e8e8ec;
+    color: rgb(17, 4, 4);
+}
+
+.search {
+    padding-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+.search__title {
+    font-size: 22px;
+}
+
+.gifs {
+    display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+}
+
+.search__button {
+    text-decoration: none;
+    background-color: rgb(24, 91, 31);
+    color:#e8e8ec;
+    display: inline-block;
+    position: relative;
+    padding: 15px 30px;
+    border: 1px solid;    
+    margin: 10px 20px;
+    text-transform: uppercase;
+    overflow: hidden;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+input {
+    padding: 0.5em 0.5em;
+}
+    </style>
+</head>
+
+<body>
+  <section class="search">
+    <div class="search__title">GIFs</div>
+    <input type="text" class="search__input" />
+    <a class="search__button">Button</a>
+</section>
+
+<section class="gifs"></section>
+
+
+
+
+
+
+
+</body>
+<script>
+let searchButton = document.querySelector(".search__button");
+
+searchButton.onclick = function (event) {
+    event.preventDefault();
+
+
+    let request = document.querySelector(".search__input").value;
+    fetch('https://api.giphy.com/v1/gifs/search?api_key=xjwp1M9jRfJHXpSHpjBFy6pVumVdducE&q=' + request + '&limit=5&offset=0&rating=g&lang=en')
+        .then(response => response.json())
+        .then(apidata => {
+            let gifs = apidata.data;
+            let content = "";
+            for (let gif of gifs) {
+                content +=
+                    `<div class='image'>
+                    <img src="${gif.images.fixed_width.url}">
+                    </div>`;
+            }
+            document.querySelector(".gifs").innerHTML = content;
+        })
+        .catch(error => console.log(error));
+};
+</script>
+
+
+</html>
